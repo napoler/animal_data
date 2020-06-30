@@ -7,3 +7,4 @@
 ```
 python run.py 
 ```
+https://github.com/napoler/animal_data/releases
