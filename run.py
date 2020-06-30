@@ -1,0 +1,34 @@
+import json
+import pymongo
+import os
+client = pymongo.MongoClient('localhost')
+db = client['animal'] #数据库名
+# collection = db['images']
+def add_col(name,path):
+    """
+    name：表名字
+    path:json文件目
+    
+    """
+    with open(path, encoding="utf-8") as jf:
+        str = jf.read()
+        data = []
+        data.extend(json.loads(str))
+        collection = db[name]
+        if len(data)>0:
+            collection.insert_many(data)
+    
+
+
+
+# 数据所在目录
+path='data'
+for pathname,dirnames,filenames in os.walk(path):
+    for filename in filenames:
+        file=os.path.join(pathname,filename)
+        if filename.endswith("json"):
+            print(file,filename.replace(".json",''))
+            name=filename.replace(".json",'')
+            add_col(name,file)
+print("已经全部导入！")
+client.close() #写完关闭连接
